@@ -32,7 +32,7 @@ ua = UserAgent()
 chrome_ua = ua.chrome
 
 # MYSQL CONNECTION PARAMS
-cnx = mysql.connector.connect(host='localhost', user='python', password='password',database='comparisdb')
+cnx = mysql.connector.connect(host='localhost', user='root', password='password',database='comparisdb')
 cursor = cnx.cursor(buffered=True)
 start = time.time()
 
@@ -71,7 +71,7 @@ def clear_states():
 
 def proxies_list():
     headers={'User-Agent': chrome_ua}
-    response = requests.get('https://raw.githubusercontent.com/UptimerBot/proxy-list/main/proxies/http.txt', headers=headers)
+    response = requests.get('https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt', headers=headers)
     with open("/home/compscript/response.txt", "w") as f:
         f.write(response.text)
         f.close()
