@@ -52,33 +52,33 @@ pcount = 0
 good_proxies = []
 
 def clear_txt():
-    f = open('response.txt', 'r+')
+    f = open('/home/compscript/response.txt', 'r+')
     f.truncate(0) # need '0' when using r+
-    f = open('good2.txt', 'r+')
+    f = open('/home/compscript/good2.txt', 'r+')
     f.truncate(0) # need '0' when using r+
    
 def clear_states():
-    f = open('Aarau.txt', 'r+')
+    f = open('/home/compscript/Aarau.txt', 'r+')
     f.truncate(0) # need '0' when using r+
-    f = open('Bern.txt', 'r+')
+    f = open('/home/compscript/Bern.txt', 'r+')
     f.truncate(0) # need '0' when using r+
-    f = open('Lucerne.txt', 'r+')
+    f = open('/home/compscript/Lucerne.txt', 'r+')
     f.truncate(0) # need '0' when using r+
-    f = open('Zug.txt', 'r+')
+    f = open('/home/compscript/Zug.txt', 'r+')
     f.truncate(0) # need '0' when using r+
-    f = open('Zurich.txt', 'r+')
+    f = open('/home/compscript/Zurich.txt', 'r+')
     f.truncate(0) # need '0' when using r+
 
 def proxies_list():
     headers={'User-Agent': chrome_ua}
     response = requests.get('https://raw.githubusercontent.com/UptimerBot/proxy-list/main/proxies/http.txt', headers=headers)
-    with open("response.txt", "w") as f:
+    with open("/home/compscript/response.txt", "w") as f:
         f.write(response.text)
         f.close()
 
 def proxies_arr():
     proxies_arr = []
-    with open('response.txt', 'r') as reader:
+    with open('/home/compscript/response.txt', 'r') as reader:
         for line in reader.readlines():
             # print(line, end='')
             proxies_arr.append(line.strip())
@@ -105,7 +105,7 @@ def extract(proxy):
     if(r.status_code == 200):
         pcount = pcount + 1
         print(pcount, " ", proxy, " is working ", r.status_code)
-        with open("good2.txt", "a") as myfile:
+        with open("/home/compscript/good2.txt", "a") as myfile:
             myfile.write(proxy)
             myfile.write('\n')
             myfile.close()
@@ -128,7 +128,7 @@ def getAllBuyProperties(proxy):
     
     session.proxies.update(proxies)
     session.headers.update(headers)
-    with open('urls.txt', 'r') as reader:
+    with open('/home/compscript/urls.txt', 'r') as reader:
         for line in reader.readlines():
             while True:
                 try:
@@ -145,7 +145,7 @@ def getAllBuyProperties(proxy):
             translated = GoogleTranslator(source='de', target='en').translate(text=title)
             state = translated.split()[-1]
             print(state)
-            file = state + ".txt"
+            file = '/home/compscript/' + state + ".txt"
             ids = j["props"]["pageProps"]["initialResultData"]["adIds"]
 
             with open(file, "w") as  f:
@@ -280,11 +280,11 @@ if(hr == str(0)):
     clear_states()
     getAllBuyProperties(random.choice(proxies))
 
-saveData("Lucerne.txt",random.choice(proxies))
-saveData("Aarau.txt",random.choice(proxies))
-saveData("Bern.txt",random.choice(proxies))
-saveData("Zug.txt",random.choice(proxies))
-saveData("Zurich.txt",random.choice(proxies))
+saveData("/home/compscript/Lucerne.txt",random.choice(proxies))
+saveData("/home/compscript/Aarau.txt",random.choice(proxies))
+saveData("/home/compscript/Bern.txt",random.choice(proxies))
+saveData("/home/compscript/Zug.txt",random.choice(proxies))
+saveData("/home/compscript/Zurich.txt",random.choice(proxies))
 
 cursor.close()
 end = time.time()
