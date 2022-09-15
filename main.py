@@ -171,7 +171,7 @@ def readFile(file):
         lines = len(arr)
         lines_range = getTimeRange(lines)
         print(lines_range)
-        data = arr[980:1009]
+        data = arr[lines_range[0]:lines_range[1]]
        
     f.close()
     return data
