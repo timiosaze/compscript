@@ -29,7 +29,7 @@ from deep_translator import (GoogleTranslator,
                              single_detection,
                              batch_detection)
 ua = UserAgent()
-chrome_ua = ua.chrome
+chrome_ua = ua.google
 
 # MYSQL CONNECTION PARAMS
 cnx = mysql.connector.connect(host='localhost', user='python', password='password',database='comparisdb')
