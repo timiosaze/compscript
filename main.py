@@ -184,6 +184,7 @@ def saveData(file, proxy):
     for id in ids:
         new_id = str(id).strip()
         print(new_id)
+        time.sleep(2)
         proxies = {
                     'http' :proxy,
                     'https':proxy,
@@ -279,11 +280,15 @@ if(hr == str(0)):
     clear_states()
     getAllBuyProperties(random.choice(proxies))
 
-saveData("/home/compscript/Lucerne.txt",random.choice(proxies))
-saveData("/home/compscript/Aarau.txt",random.choice(proxies))
-saveData("/home/compscript/Bern.txt",random.choice(proxies))
-saveData("/home/compscript/Zug.txt",random.choice(proxies))
 saveData("/home/compscript/Zurich.txt",random.choice(proxies))
+time.sleep(8)
+saveData("/home/compscript/Lucerne.txt",random.choice(proxies))
+time.sleep(8)
+saveData("/home/compscript/Aarau.txt",random.choice(proxies))
+time.sleep(8)
+saveData("/home/compscript/Bern.txt",random.choice(proxies))
+time.sleep(8)
+saveData("/home/compscript/Zug.txt",random.choice(proxies))
 
 cursor.close()
 end = time.time()
