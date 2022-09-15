@@ -171,7 +171,7 @@ def readFile(file):
         lines = len(arr)
         lines_range = getTimeRange(lines)
         print(lines_range)
-        data = arr[lines_range[0]:lines_range[1]]
+        data = arr[980:1009]
        
     f.close()
     return data
@@ -184,7 +184,7 @@ def saveData(file, proxy):
     for id in ids:
         new_id = str(id).strip()
         print(new_id)
-        time.sleep(2)
+        time.sleep(1)
         proxies = {
                     'http' :proxy,
                     'https':proxy,
@@ -281,13 +281,13 @@ if(hr == str(0)):
     getAllBuyProperties(random.choice(proxies))
 
 saveData("/home/compscript/Zurich.txt",random.choice(proxies))
-time.sleep(8)
+time.sleep(3)
 saveData("/home/compscript/Lucerne.txt",random.choice(proxies))
-time.sleep(8)
+time.sleep(3)
 saveData("/home/compscript/Aarau.txt",random.choice(proxies))
-time.sleep(8)
+time.sleep(3)
 saveData("/home/compscript/Bern.txt",random.choice(proxies))
-time.sleep(8)
+time.sleep(3)
 saveData("/home/compscript/Zug.txt",random.choice(proxies))
 
 cursor.close()
