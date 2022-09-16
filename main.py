@@ -276,9 +276,8 @@ proxies = [*set(good_proxies)]
 print(len(proxies), " are working well")
 proxy = random.choice(proxies)
 hr = time.strftime('%H')
-if(hr == str(0)):
-    clear_states()
-    getAllBuyProperties(proxy)
+# clear_states()
+# getAllBuyProperties(proxy)
 
 saveData("/home/compscript/Zurich.txt",proxy)
 saveData("/home/compscript/Lucerne.txt",proxy)
