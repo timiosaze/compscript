@@ -204,6 +204,7 @@ def saveData(file, proxy):
                 print("Proxy Error Encountered: Reloading")
         soup = BeautifulSoup(response.text, "lxml")
         div = soup.find('script',attrs = {'id':'__NEXT_DATA__'})
+        print(div)
         print(response.status_code)
         j = json.loads(div.text)
         if "ad" in j["props"]["pageProps"]:
@@ -270,7 +271,7 @@ def saveData(file, proxy):
 # print(save_proxies)
 start = time.time()
 
-# clear_txt()
+clear_txt()
 
 # proxies_list()
 proxylist = proxies_arr()
