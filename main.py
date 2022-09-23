@@ -136,14 +136,13 @@ def getAllBuyProperties(proxy):
                 'https':proxy,
                 }
     headers={"Authorization": "Token p55g59nll97lhy5rt9hmshlpqq7v7qnf43fwmrzq"}
-    session.proxies.update(proxies)
-    session.headers.update(headers)
+   
     with open('/home/compscript/urls.txt', 'r') as reader:
         for line in reader.readlines():
             while True:
                 try:
                     url = line.strip()
-                    response = session.get(url)
+                    response = requests.get(url, proxies=proxies, headers=headers)
                     break
                 except requests.exceptions.ProxyError:
                     print("Proxy Error Encountered: Reloading")
@@ -201,11 +200,10 @@ def saveData(file, proxy):
                     'https':proxy,
                     }
         headers={"Authorization": "Token p55g59nll97lhy5rt9hmshlpqq7v7qnf43fwmrzq"}
-        session.proxies.update(proxies)
-        session.headers.update(headers)
+       
         while True:
             try:
-                response = session.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '')
+                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies=proxies, headers=headers)
                 break
             except requests.exceptions.ProxyError:
                 print("Proxy Error Encountered: Reloading")
