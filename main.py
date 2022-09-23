@@ -193,12 +193,12 @@ def saveData(file, proxy):
        
         while True:
             try:
-                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies={'http':proxy}, auth=('ahmdevnb','d6n2kw7b9l03'))
+                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies={'http':proxy}, auth=('ahmdevnb','d6n2kw7b9l03'), stream=True)
+                response.raw._connection.sock.getsockname()
                 break
             except requests.exceptions.ProxyError:
                 print("Proxy Error Encountered: Reloading")
-        ip = response.json()['ip']
-        print('Your public IP is:', ip)     
+            
         soup = BeautifulSoup(response.text, "lxml")
         div = soup.find('script',attrs = {'id':'__NEXT_DATA__'})
         print(response.text)
