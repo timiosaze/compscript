@@ -127,7 +127,7 @@ def extract(proxy):
 
 
 def getAllBuyProperties(proxy):
-    proxy = proxy + '/'
+    # proxy = proxy + '/'
     status("GETTING RENT PROPERTIES....")
     ids = []
     time.sleep(1)
@@ -187,7 +187,7 @@ def readFile(file):
     return data
 
 def saveData(file, proxy):
-    proxy = proxy + '/'
+    # proxy = proxy + '/'
     cursor_count = 0
     section = "Buy"
     ids = readFile(file)
