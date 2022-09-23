@@ -102,10 +102,11 @@ def proxies_arr():
 
 def extract(proxy):
     global pcount
+    proxy = proxy +'/'
     # auth = HTTPProxyAuth("ahmdevnb", "d6n2kw7b9l03")
     while True:
         try:
-            r = requests.get('https://www.comparis.ch/immobilien/result/list?requestobject=%7B%22DealType%22%3A20%2C%22SiteId%22%3A0%2C%22RootPropertyTypes%22%3A%5B%5D%2C%22PropertyTypes%22%3A%5B%5D%2C%22RoomsFrom%22%3Anull%2C%22RoomsTo%22%3Anull%2C%22FloorSearchType%22%3A0%2C%22LivingSpaceFrom%22%3Anull%2C%22LivingSpaceTo%22%3Anull%2C%22PriceFrom%22%3Anull%2C%22PriceTo%22%3Anull%2C%22ComparisPointsMin%22%3A0%2C%22AdAgeMax%22%3A0%2C%22AdAgeInHoursMax%22%3Anull%2C%22Keyword%22%3A%22%22%2C%22WithImagesOnly%22%3Anull%2C%22WithPointsOnly%22%3Anull%2C%22Radius%22%3A%2220%22%2C%22MinAvailableDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22MinChangeDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22LocationSearchString%22%3A%22Z%C3%BCrich%22%2C%22Sort%22%3A11%2C%22HasBalcony%22%3Afalse%2C%22HasTerrace%22%3Afalse%2C%22HasFireplace%22%3Afalse%2C%22HasDishwasher%22%3Afalse%2C%22HasWashingMachine%22%3Afalse%2C%22HasLift%22%3Afalse%2C%22HasParking%22%3Afalse%2C%22PetsAllowed%22%3Afalse%2C%22MinergieCertified%22%3Afalse%2C%22WheelchairAccessible%22%3Afalse%2C%22LowerLeftLatitude%22%3Anull%2C%22LowerLeftLongitude%22%3Anull%2C%22UpperRightLatitude%22%3Anull%2C%22UpperRightLongitude%22%3Anull%7D', proxies={'http':proxy}, auth=('ahmdevnb','d6n2kw7b9l03'))
+            r = requests.get('https://www.comparis.ch/immobilien/result/list?requestobject=%7B%22DealType%22%3A20%2C%22SiteId%22%3A0%2C%22RootPropertyTypes%22%3A%5B%5D%2C%22PropertyTypes%22%3A%5B%5D%2C%22RoomsFrom%22%3Anull%2C%22RoomsTo%22%3Anull%2C%22FloorSearchType%22%3A0%2C%22LivingSpaceFrom%22%3Anull%2C%22LivingSpaceTo%22%3Anull%2C%22PriceFrom%22%3Anull%2C%22PriceTo%22%3Anull%2C%22ComparisPointsMin%22%3A0%2C%22AdAgeMax%22%3A0%2C%22AdAgeInHoursMax%22%3Anull%2C%22Keyword%22%3A%22%22%2C%22WithImagesOnly%22%3Anull%2C%22WithPointsOnly%22%3Anull%2C%22Radius%22%3A%2220%22%2C%22MinAvailableDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22MinChangeDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22LocationSearchString%22%3A%22Z%C3%BCrich%22%2C%22Sort%22%3A11%2C%22HasBalcony%22%3Afalse%2C%22HasTerrace%22%3Afalse%2C%22HasFireplace%22%3Afalse%2C%22HasDishwasher%22%3Afalse%2C%22HasWashingMachine%22%3Afalse%2C%22HasLift%22%3Afalse%2C%22HasParking%22%3Afalse%2C%22PetsAllowed%22%3Afalse%2C%22MinergieCertified%22%3Afalse%2C%22WheelchairAccessible%22%3Afalse%2C%22LowerLeftLatitude%22%3Anull%2C%22LowerLeftLongitude%22%3Anull%2C%22UpperRightLatitude%22%3Anull%2C%22UpperRightLongitude%22%3Anull%7D', proxies={'http':proxy, 'https':proxy}, headers={'User-Agent': 'Mozilla/5.0'})
             print(str(r.status_code) + ":  -> " + proxy)
             if(r.status_code == 200):
                 pcount = pcount + 1
@@ -137,7 +138,7 @@ def getAllBuyProperties(proxy):
             while True:
                 try:
                     url = line.strip()
-                    response = requests.get(url, proxies={'http':proxy}, auth=('ahmdevnb','d6n2kw7b9l03'))
+                    response = requests.get(url, proxies={'http':proxy, 'https':proxy})
                     break
                 except requests.exceptions.ProxyError:
                     print("Proxy Error Encountered: Reloading")
@@ -193,8 +194,8 @@ def saveData(file, proxy):
        
         while True:
             try:
-                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies={'http':proxy}, auth=('ahmdevnb','d6n2kw7b9l03'), stream=True)
-                print(response.raw._original_response.fp.raw._sock.getpeername())
+                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies={'http':proxy, 'https':proxy}, headers={'User-Agent': 'Mozilla/5.0'})
+                print(response)
                 break
             except requests.exceptions.ProxyError:
                 print("Proxy Error Encountered: Reloading")
