@@ -195,15 +195,10 @@ def saveData(file, proxy):
         new_id = str(id).strip()
         print(new_id)
         time.sleep(1)
-        proxies = {
-                    'http' :proxy,
-                    'https':proxy,
-                    }
-        headers={"Authorization": "Token p55g59nll97lhy5rt9hmshlpqq7v7qnf43fwmrzq"}
        
         while True:
             try:
-                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies=proxies, headers=headers)
+                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies={'http':proxy, 'https':proxy},headers={"Authorization": "Token p55g59nll97lhy5rt9hmshlpqq7v7qnf43fwmrzq"})
                 break
             except requests.exceptions.ProxyError:
                 print("Proxy Error Encountered: Reloading")
@@ -290,7 +285,7 @@ print(len(proxies), " are working well")
 # hr = time.strftime('%H')
 # clear_states()
 # getAllBuyProperties(proxy)
-
+print(random.choice(proxies))
 saveData("/home/compscript/Zurich.txt",random.choice(proxies))
 saveData("/home/compscript/Lucerne.txt",random.choice(proxies))
 saveData("/home/compscript/Aarau.txt",random.choice(proxies))
