@@ -102,11 +102,15 @@ def proxies_arr():
 
 def extract(proxy):
     global pcount
-    headers={'User-Agent': ua.google}
+    # headers={'User-Agent': ua.google}
+    proxies={
+            "http": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/",
+            "https": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/"
+        }
     # auth = HTTPProxyAuth("ahmdevnb", "d6n2kw7b9l03")
     while True:
         try:
-            r = requests.get('https://www.comparis.ch/immobilien/result/list?requestobject=%7B%22DealType%22%3A20%2C%22SiteId%22%3A0%2C%22RootPropertyTypes%22%3A%5B%5D%2C%22PropertyTypes%22%3A%5B%5D%2C%22RoomsFrom%22%3Anull%2C%22RoomsTo%22%3Anull%2C%22FloorSearchType%22%3A0%2C%22LivingSpaceFrom%22%3Anull%2C%22LivingSpaceTo%22%3Anull%2C%22PriceFrom%22%3Anull%2C%22PriceTo%22%3Anull%2C%22ComparisPointsMin%22%3A0%2C%22AdAgeMax%22%3A0%2C%22AdAgeInHoursMax%22%3Anull%2C%22Keyword%22%3A%22%22%2C%22WithImagesOnly%22%3Anull%2C%22WithPointsOnly%22%3Anull%2C%22Radius%22%3A%2220%22%2C%22MinAvailableDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22MinChangeDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22LocationSearchString%22%3A%22Z%C3%BCrich%22%2C%22Sort%22%3A11%2C%22HasBalcony%22%3Afalse%2C%22HasTerrace%22%3Afalse%2C%22HasFireplace%22%3Afalse%2C%22HasDishwasher%22%3Afalse%2C%22HasWashingMachine%22%3Afalse%2C%22HasLift%22%3Afalse%2C%22HasParking%22%3Afalse%2C%22PetsAllowed%22%3Afalse%2C%22MinergieCertified%22%3Afalse%2C%22WheelchairAccessible%22%3Afalse%2C%22LowerLeftLatitude%22%3Anull%2C%22LowerLeftLongitude%22%3Anull%2C%22UpperRightLatitude%22%3Anull%2C%22UpperRightLongitude%22%3Anull%7D', proxies={'http':"http://" + proxy, 'https': "https://" + proxy}, headers=headers, timeout=4)
+            r = requests.get('https://www.comparis.ch/immobilien/result/list?requestobject=%7B%22DealType%22%3A20%2C%22SiteId%22%3A0%2C%22RootPropertyTypes%22%3A%5B%5D%2C%22PropertyTypes%22%3A%5B%5D%2C%22RoomsFrom%22%3Anull%2C%22RoomsTo%22%3Anull%2C%22FloorSearchType%22%3A0%2C%22LivingSpaceFrom%22%3Anull%2C%22LivingSpaceTo%22%3Anull%2C%22PriceFrom%22%3Anull%2C%22PriceTo%22%3Anull%2C%22ComparisPointsMin%22%3A0%2C%22AdAgeMax%22%3A0%2C%22AdAgeInHoursMax%22%3Anull%2C%22Keyword%22%3A%22%22%2C%22WithImagesOnly%22%3Anull%2C%22WithPointsOnly%22%3Anull%2C%22Radius%22%3A%2220%22%2C%22MinAvailableDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22MinChangeDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22LocationSearchString%22%3A%22Z%C3%BCrich%22%2C%22Sort%22%3A11%2C%22HasBalcony%22%3Afalse%2C%22HasTerrace%22%3Afalse%2C%22HasFireplace%22%3Afalse%2C%22HasDishwasher%22%3Afalse%2C%22HasWashingMachine%22%3Afalse%2C%22HasLift%22%3Afalse%2C%22HasParking%22%3Afalse%2C%22PetsAllowed%22%3Afalse%2C%22MinergieCertified%22%3Afalse%2C%22WheelchairAccessible%22%3Afalse%2C%22LowerLeftLatitude%22%3Anull%2C%22LowerLeftLongitude%22%3Anull%2C%22UpperRightLatitude%22%3Anull%2C%22UpperRightLongitude%22%3Anull%7D', proxies=proxies, timeout=2)
             if(r.status_code == 200):
                 pcount = pcount + 1
                 print(pcount, " ", proxy, " is working ", r.status_code)
@@ -125,19 +129,22 @@ def extract(proxy):
 
 
 
-def getAllBuyProperties(proxy):
+def getAllBuyProperties():
     # proxy = proxy + '/'
     status("GETTING RENT PROPERTIES....")
     ids = []
     time.sleep(1)
     
-   
+    proxies={
+            "http": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/",
+            "https": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/"
+        }
     with open('/home/compscript/urls.txt', 'r') as reader:
         for line in reader.readlines():
             while True:
                 try:
                     url = line.strip()
-                    response = requests.get(url, proxies={'http':"http://" + proxy, 'https': "https://" + proxy}, headers={'User-Agent': ua.chrome}, timeout=4)
+                    response = requests.get(url, proxies=proxies, timeout=4)
                     break
                 except requests.exceptions.ProxyError:
                     print("Proxy Error Encountered: Reloading")
@@ -180,7 +187,7 @@ def readFile(file):
     f.close()
     return data
 
-def saveData(file, proxy):
+def saveData(file):
     # proxy = proxy + '/'
     cursor_count = 0
     section = "Buy"
@@ -190,10 +197,13 @@ def saveData(file, proxy):
         new_id = str(id).strip()
         print(new_id)
         time.sleep(1)
-       
+        proxies={
+            "http": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/",
+            "https": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/"
+        }
         while True:
             try:
-                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies={'http':proxy, 'https':proxy}, headers={'User-Agent': ua.chrome}, timeout=4)
+                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies=proxies,  timeout=2)
                 break
             except requests.exceptions.ProxyError:
                 print("Proxy Error Encountered: Reloading")
@@ -266,26 +276,26 @@ def saveData(file, proxy):
 # print(save_proxies)
 start = time.time()
 
-clear_txt()
+# clear_txt()
 
-proxies_list()
-proxylist = proxies_arr()
+# proxies_list()
+# proxylist = proxies_arr()
 
 
 
-with concurrent.futures.ThreadPoolExecutor() as executor:
-        executor.map(extract, proxylist)
-proxies = [*set(good_proxies)]
-print(len(proxies), " are working well")
+# with concurrent.futures.ThreadPoolExecutor() as executor:
+#         executor.map(extract, proxylist)
+# proxies = [*set(good_proxies)]
+# print(len(proxies), " are working well")
 # proxy = random.choice(proxies)
 # hr = time.strftime('%H')
 # clear_states()
 # getAllBuyProperties(proxy)
-saveData("/home/compscript/Zurich.txt",random.choice(proxies))
-saveData("/home/compscript/Lucerne.txt",random.choice(proxies))
-saveData("/home/compscript/Aarau.txt",random.choice(proxies))
-saveData("/home/compscript/Bern.txt",random.choice(proxies))
-saveData("/home/compscript/Zug.txt",random.choice(proxies))
+saveData("/home/compscript/Zurich.txt")
+saveData("/home/compscript/Lucerne.txt")
+saveData("/home/compscript/Aarau.txt")
+saveData("/home/compscript/Bern.txt")
+saveData("/home/compscript/Zug.txt")
 
 cursor.close()
 end = time.time()
