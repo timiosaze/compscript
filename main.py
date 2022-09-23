@@ -198,7 +198,7 @@ def saveData(file, proxy):
        
         while True:
             try:
-                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies={'http':proxy, 'https':proxy},headers={"Authorization": "Token p55g59nll97lhy5rt9hmshlpqq7v7qnf43fwmrzq"})
+                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies={'http':proxy},headers={"Authorization": "Token p55g59nll97lhy5rt9hmshlpqq7v7qnf43fwmrzq"})
                 break
             except requests.exceptions.ProxyError:
                 print("Proxy Error Encountered: Reloading")
