@@ -288,16 +288,16 @@ with concurrent.futures.ThreadPoolExecutor() as executor:
         executor.map(extract, proxylist)
 proxies = [*set(good_proxies)]
 print(len(proxies), " are working well")
-proxy = random.choice(proxies)
+# proxy = random.choice(proxies)
 # hr = time.strftime('%H')
 # clear_states()
 # getAllBuyProperties(proxy)
 
-saveData("/home/compscript/Zurich.txt",proxy)
-saveData("/home/compscript/Lucerne.txt",proxy)
-saveData("/home/compscript/Aarau.txt",proxy)
-saveData("/home/compscript/Bern.txt",proxy)
-saveData("/home/compscript/Zug.txt",proxy)
+saveData("/home/compscript/Zurich.txt",random.choice(proxies))
+saveData("/home/compscript/Lucerne.txt",random.choice(proxies))
+saveData("/home/compscript/Aarau.txt",random.choice(proxies))
+saveData("/home/compscript/Bern.txt",random.choice(proxies))
+saveData("/home/compscript/Zug.txt",random.choice(proxies))
 
 cursor.close()
 end = time.time()
