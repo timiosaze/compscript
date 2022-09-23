@@ -73,7 +73,7 @@ def clear_states():
 
 def proxies_list():
     headers={'User-Agent': ua.chrome}
-    response = requests.get('https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt', headers=headers)
+    response = requests.get('https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTPS_RAW.txt', headers=headers)
     with open("/home/compscript/response.txt", "w") as f:
         f.write(response.text)
         f.close()
