@@ -16,6 +16,8 @@ from urllib3.util.retry import Retry
 import json
 import concurrent.futures
 import random
+from requests.auth import HTTPProxyAuth
+
 
 from deep_translator import (GoogleTranslator,
                              MicrosoftTranslator,
@@ -32,7 +34,7 @@ ua = UserAgent()
 chrome_ua = ua.google
 
 # MYSQL CONNECTION PARAMS
-cnx = mysql.connector.connect(host='localhost', user='python', password='password',database='comparisdb')
+cnx = mysql.connector.connect(host='localhost', user='root', password='password',database='comparisdb')
 cursor = cnx.cursor(buffered=True)
 start = time.time()
 
@@ -69,47 +71,55 @@ def clear_states():
     f = open('/home/compscript/Zurich.txt', 'r+')
     f.truncate(0) # need '0' when using r+
 
-def proxies_list():
-    headers={'User-Agent': chrome_ua}
-    response = requests.get('https://raw.githubusercontent.com/UptimerBot/proxy-list/main/proxies/http.txt', headers=headers)
-    with open("/home/compscript/response.txt", "w") as f:
-        f.write(response.text)
-        f.close()
+# def proxies_list():
+#     headers={'User-Agent': chrome_ua}
+#     response = requests.get('https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt', headers=headers)
+#     with open("response.txt", "w") as f:
+#         f.write(response.text)
+#         f.close()
 
 def proxies_arr():
     proxies_arr = []
-    with open('/home/compscript/response.txt', 'r') as reader:
+    with open('/home/compscript/proxies.txt', 'r') as reader:
         for line in reader.readlines():
             # print(line, end='')
             proxies_arr.append(line.strip())
     return proxies_arr
 
-#get the list of free proxies
-def getProxies():
-    r = requests.get('https://free-proxy-list.net/')
-    soup = BeautifulSoup(r.content, 'html.parser')
-    table = soup.find('tbody')
-    proxies = []
-    for row in table:
-        if row.find_all('td')[4].text =='elite proxy':
-            proxy = ':'.join([row.find_all('td')[0].text, row.find_all('td')[1].text])
-            proxies.append(proxy)
-        else:
-            pass
-    return proxies
+# #get the list of free proxies
+# def getProxies():
+#     r = requests.get('https://free-proxy-list.net/')
+#     soup = BeautifulSoup(r.content, 'html.parser')
+#     table = soup.find('tbody')
+#     proxies = []
+#     for row in table:
+#         if row.find_all('td')[4].text =='elite proxy':
+#             proxy = ':'.join([row.find_all('td')[0].text, row.find_all('td')[1].text])
+#             proxies.append(proxy)
+#         else:
+#             pass
+#     return proxies
 
 def extract(proxy):
+    proxy = proxy + '/'
     global pcount
-    headers={'User-Agent': chrome_ua}
-    r = requests.get('https://www.comparis.ch/immobilien/result/list?requestobject=%7B%22DealType%22%3A20%2C%22SiteId%22%3A0%2C%22RootPropertyTypes%22%3A%5B%5D%2C%22PropertyTypes%22%3A%5B%5D%2C%22RoomsFrom%22%3Anull%2C%22RoomsTo%22%3Anull%2C%22FloorSearchType%22%3A0%2C%22LivingSpaceFrom%22%3Anull%2C%22LivingSpaceTo%22%3Anull%2C%22PriceFrom%22%3Anull%2C%22PriceTo%22%3Anull%2C%22ComparisPointsMin%22%3A0%2C%22AdAgeMax%22%3A0%2C%22AdAgeInHoursMax%22%3Anull%2C%22Keyword%22%3A%22%22%2C%22WithImagesOnly%22%3Anull%2C%22WithPointsOnly%22%3Anull%2C%22Radius%22%3A%2220%22%2C%22MinAvailableDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22MinChangeDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22LocationSearchString%22%3A%22Z%C3%BCrich%22%2C%22Sort%22%3A11%2C%22HasBalcony%22%3Afalse%2C%22HasTerrace%22%3Afalse%2C%22HasFireplace%22%3Afalse%2C%22HasDishwasher%22%3Afalse%2C%22HasWashingMachine%22%3Afalse%2C%22HasLift%22%3Afalse%2C%22HasParking%22%3Afalse%2C%22PetsAllowed%22%3Afalse%2C%22MinergieCertified%22%3Afalse%2C%22WheelchairAccessible%22%3Afalse%2C%22LowerLeftLatitude%22%3Anull%2C%22LowerLeftLongitude%22%3Anull%2C%22UpperRightLatitude%22%3Anull%2C%22UpperRightLongitude%22%3Anull%7D', headers=headers, proxies={'http' :proxy,'https': proxy},timeout=2)
-    if(r.status_code == 200):
-        pcount = pcount + 1
-        print(pcount, " ", proxy, " is working ", r.status_code)
-        with open("/home/compscript/good2.txt", "a") as myfile:
-            myfile.write(proxy)
-            myfile.write('\n')
-            myfile.close()
-        good_proxies.append(proxy)
+    # auth = HTTPProxyAuth("ahmdevnb", "d6n2kw7b9l03")
+    while True:
+        try:
+            r = requests.get('https://www.comparis.ch/immobilien/result/list?requestobject=%7B%22DealType%22%3A20%2C%22SiteId%22%3A0%2C%22RootPropertyTypes%22%3A%5B%5D%2C%22PropertyTypes%22%3A%5B%5D%2C%22RoomsFrom%22%3Anull%2C%22RoomsTo%22%3Anull%2C%22FloorSearchType%22%3A0%2C%22LivingSpaceFrom%22%3Anull%2C%22LivingSpaceTo%22%3Anull%2C%22PriceFrom%22%3Anull%2C%22PriceTo%22%3Anull%2C%22ComparisPointsMin%22%3A0%2C%22AdAgeMax%22%3A0%2C%22AdAgeInHoursMax%22%3Anull%2C%22Keyword%22%3A%22%22%2C%22WithImagesOnly%22%3Anull%2C%22WithPointsOnly%22%3Anull%2C%22Radius%22%3A%2220%22%2C%22MinAvailableDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22MinChangeDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22LocationSearchString%22%3A%22Z%C3%BCrich%22%2C%22Sort%22%3A11%2C%22HasBalcony%22%3Afalse%2C%22HasTerrace%22%3Afalse%2C%22HasFireplace%22%3Afalse%2C%22HasDishwasher%22%3Afalse%2C%22HasWashingMachine%22%3Afalse%2C%22HasLift%22%3Afalse%2C%22HasParking%22%3Afalse%2C%22PetsAllowed%22%3Afalse%2C%22MinergieCertified%22%3Afalse%2C%22WheelchairAccessible%22%3Afalse%2C%22LowerLeftLatitude%22%3Anull%2C%22LowerLeftLongitude%22%3Anull%2C%22UpperRightLatitude%22%3Anull%2C%22UpperRightLongitude%22%3Anull%7D', proxies={'http':proxy, 'https':proxy},headers={"Authorization": "Token p55g59nll97lhy5rt9hmshlpqq7v7qnf43fwmrzq"})
+            # print(str(r.status_code) + ":  -> " + proxy)
+            if(r.status_code == 200):
+                pcount = pcount + 1
+                print(pcount, " ", proxy, " is working ", r.status_code)
+                with open("/home/compscript/good2.txt", "a") as myfile:
+                    myfile.write(proxy)
+                    myfile.write('\n')
+                    myfile.close()
+                good_proxies.append(proxy)
+            break
+        except requests.exceptions.ProxyError:
+            print("Proxy Error Encountered: Reloading")
+    # 
     return proxy
 
 
@@ -117,6 +127,7 @@ def extract(proxy):
 
 
 def getAllBuyProperties(proxy):
+    proxy = proxy + '/'
     status("GETTING RENT PROPERTIES....")
     ids = []
     time.sleep(1)
@@ -124,8 +135,7 @@ def getAllBuyProperties(proxy):
                 'http' :proxy,
                 'https':proxy,
                 }
-    headers={'User-Agent': chrome_ua}
-    
+    headers={"Authorization": "Token p55g59nll97lhy5rt9hmshlpqq7v7qnf43fwmrzq"}
     session.proxies.update(proxies)
     session.headers.update(headers)
     with open('/home/compscript/urls.txt', 'r') as reader:
@@ -177,6 +187,7 @@ def readFile(file):
     return data
 
 def saveData(file, proxy):
+    proxy = proxy + '/'
     cursor_count = 0
     section = "Buy"
     ids = readFile(file)
@@ -189,7 +200,7 @@ def saveData(file, proxy):
                     'http' :proxy,
                     'https':proxy,
                     }
-        headers={'User-Agent': chrome_ua}
+        headers={"Authorization": "Token p55g59nll97lhy5rt9hmshlpqq7v7qnf43fwmrzq"}
         session.proxies.update(proxies)
         session.headers.update(headers)
         while True:
@@ -266,16 +277,19 @@ def saveData(file, proxy):
 # print(save_proxies)
 start = time.time()
 
-clear_txt()
+# clear_txt()
 
-proxies_list()
+# proxies_list()
 proxylist = proxies_arr()
+
+
+
 with concurrent.futures.ThreadPoolExecutor() as executor:
         executor.map(extract, proxylist)
 proxies = [*set(good_proxies)]
 print(len(proxies), " are working well")
 proxy = random.choice(proxies)
-hr = time.strftime('%H')
+# hr = time.strftime('%H')
 # clear_states()
 # getAllBuyProperties(proxy)
 
