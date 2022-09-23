@@ -102,7 +102,7 @@ def proxies_arr():
 
 def extract(proxy):
     global pcount
-    headers={'User-Agent': ua.chrome}
+    headers={'User-Agent': ua.google}
     # auth = HTTPProxyAuth("ahmdevnb", "d6n2kw7b9l03")
     while True:
         try:
