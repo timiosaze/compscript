@@ -268,7 +268,7 @@ start = time.time()
 
 clear_txt()
 
-# proxies_list()
+proxies_list()
 proxylist = proxies_arr()
 
 
@@ -281,7 +281,6 @@ print(len(proxies), " are working well")
 # hr = time.strftime('%H')
 # clear_states()
 # getAllBuyProperties(proxy)
-print(random.choice(proxies))
 saveData("/home/compscript/Zurich.txt",random.choice(proxies))
 saveData("/home/compscript/Lucerne.txt",random.choice(proxies))
 saveData("/home/compscript/Aarau.txt",random.choice(proxies))
