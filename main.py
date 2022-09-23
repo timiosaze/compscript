@@ -207,7 +207,7 @@ def saveData(file):
                 break
             except requests.exceptions.ProxyError:
                 print("Proxy Error Encountered: Reloading")
-            
+        print(response.text) 
         soup = BeautifulSoup(response.text, "lxml")
         div = soup.find('script',attrs = {'id':'__NEXT_DATA__'})
         print(response.status_code)
