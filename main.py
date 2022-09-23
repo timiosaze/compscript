@@ -194,7 +194,7 @@ def saveData(file, proxy):
         while True:
             try:
                 response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies={'http':proxy}, auth=('ahmdevnb','d6n2kw7b9l03'), stream=True)
-                response.raw._connection.sock.getsockname()
+                print(response.raw._connection.sock.getsockname())
                 break
             except requests.exceptions.ProxyError:
                 print("Proxy Error Encountered: Reloading")
