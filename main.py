@@ -101,7 +101,6 @@ def proxies_arr():
 #     return proxies
 
 def extract(proxy):
-    proxy = proxy + '/'
     global pcount
     # auth = HTTPProxyAuth("ahmdevnb", "d6n2kw7b9l03")
     while True:
