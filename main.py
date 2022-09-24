@@ -207,6 +207,8 @@ def saveData(file):
                     },
                     verify='/home/compscript/zyte-smartproxy-ca.crt' 
                 )
+                if(int(response.status_code) == 503):
+                    continue
                 break
             except requests.exceptions.ProxyError:
                 print("Proxy Error Encountered: Reloading")
