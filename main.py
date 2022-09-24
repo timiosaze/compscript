@@ -34,7 +34,7 @@ ua = UserAgent()
 chrome_ua = ua.google
 
 # MYSQL CONNECTION PARAMS
-cnx = mysql.connector.connect(host='localhost', user='root', password='password',database='comparisdb')
+cnx = mysql.connector.connect(host='localhost', user='python', password='password',database='comparisdb')
 cursor = cnx.cursor(buffered=True)
 start = time.time()
 
