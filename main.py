@@ -205,7 +205,7 @@ def saveData(file):
                         "http": "http://d5b58097f4724f53b633fbdd6a5f82cc:@proxy.crawlera.com:8011/",
                         "https": "http://d5b58097f4724f53b633fbdd6a5f82cc:@proxy.crawlera.com:8011/",
                     },
-                    verify='/Users/admin/Downloads/zyte-smartproxy-ca.crt' 
+                    verify='/home/compscript/zyte-smartproxy-ca.crt' 
                 )
                 break
             except requests.exceptions.ProxyError:
