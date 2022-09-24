@@ -135,16 +135,17 @@ def getAllBuyProperties():
     ids = []
     time.sleep(1)
     
-    proxies={
-            "http": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/",
-            "https": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/"
-        }
     with open('/home/compscript/urls.txt', 'r') as reader:
         for line in reader.readlines():
             while True:
                 try:
                     url = line.strip()
-                    response = requests.get(url, proxies=proxies, timeout=4)
+                    response = requests.get(url, 
+                        proxies={
+                            "http": "http://d5b58097f4724f53b633fbdd6a5f82cc:@proxy.crawlera.com:8011/",
+                            "https": "http://d5b58097f4724f53b633fbdd6a5f82cc:@proxy.crawlera.com:8011/",
+                        },
+                        verify='/home/compscript/zyte-smartproxy-ca.crt')
                     break
                 except requests.exceptions.ProxyError:
                     print("Proxy Error Encountered: Reloading")
@@ -279,7 +280,8 @@ def saveData(file):
 # print(getTimeRange())
 # print(save_proxies)
 start = time.time()
-
+clear_states()
+getAllBuyProperties()
 # clear_txt()
 
 # proxies_list()
