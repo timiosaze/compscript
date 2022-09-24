@@ -34,7 +34,7 @@ ua = UserAgent()
 chrome_ua = ua.google
 
 # MYSQL CONNECTION PARAMS
-cnx = mysql.connector.connect(host='localhost', user='python', password='password',database='comparisdb')
+cnx = mysql.connector.connect(host='localhost', user='root', password='password',database='comparisdb')
 cursor = cnx.cursor(buffered=True)
 start = time.time()
 
@@ -74,13 +74,13 @@ def clear_states():
 def proxies_list():
     headers={'User-Agent': ua.chrome}
     response = requests.get('https://raw.githubusercontent.com/UptimerBot/proxy-list/main/proxies/http.txt', headers=headers)
-    with open("/home/compscript/response.txt", "w") as f:
+    with open("response.txt", "w") as f:
         f.write(response.text)
         f.close()
 
 def proxies_arr():
     proxies_arr = []
-    with open('/home/compscript/response.txt', 'r') as reader:
+    with open('response.txt', 'r') as reader:
         for line in reader.readlines():
             # print(line, end='')
             proxies_arr.append(line.strip())
@@ -102,19 +102,19 @@ def proxies_arr():
 
 def extract(proxy):
     global pcount
-    # headers={'User-Agent': ua.google}
+    headers={'User-Agent': ua.google}
     proxies={
-            "http": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/",
-            "https": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/"
+            "http": proxy,
+            "https": proxy,
         }
     # auth = HTTPProxyAuth("ahmdevnb", "d6n2kw7b9l03")
     while True:
         try:
-            r = requests.get('https://www.comparis.ch/immobilien/result/list?requestobject=%7B%22DealType%22%3A20%2C%22SiteId%22%3A0%2C%22RootPropertyTypes%22%3A%5B%5D%2C%22PropertyTypes%22%3A%5B%5D%2C%22RoomsFrom%22%3Anull%2C%22RoomsTo%22%3Anull%2C%22FloorSearchType%22%3A0%2C%22LivingSpaceFrom%22%3Anull%2C%22LivingSpaceTo%22%3Anull%2C%22PriceFrom%22%3Anull%2C%22PriceTo%22%3Anull%2C%22ComparisPointsMin%22%3A0%2C%22AdAgeMax%22%3A0%2C%22AdAgeInHoursMax%22%3Anull%2C%22Keyword%22%3A%22%22%2C%22WithImagesOnly%22%3Anull%2C%22WithPointsOnly%22%3Anull%2C%22Radius%22%3A%2220%22%2C%22MinAvailableDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22MinChangeDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22LocationSearchString%22%3A%22Z%C3%BCrich%22%2C%22Sort%22%3A11%2C%22HasBalcony%22%3Afalse%2C%22HasTerrace%22%3Afalse%2C%22HasFireplace%22%3Afalse%2C%22HasDishwasher%22%3Afalse%2C%22HasWashingMachine%22%3Afalse%2C%22HasLift%22%3Afalse%2C%22HasParking%22%3Afalse%2C%22PetsAllowed%22%3Afalse%2C%22MinergieCertified%22%3Afalse%2C%22WheelchairAccessible%22%3Afalse%2C%22LowerLeftLatitude%22%3Anull%2C%22LowerLeftLongitude%22%3Anull%2C%22UpperRightLatitude%22%3Anull%2C%22UpperRightLongitude%22%3Anull%7D', proxies=proxies, timeout=2)
+            r = requests.get('https://www.comparis.ch/immobilien/result/list?requestobject=%7B%22DealType%22%3A20%2C%22SiteId%22%3A0%2C%22RootPropertyTypes%22%3A%5B%5D%2C%22PropertyTypes%22%3A%5B%5D%2C%22RoomsFrom%22%3Anull%2C%22RoomsTo%22%3Anull%2C%22FloorSearchType%22%3A0%2C%22LivingSpaceFrom%22%3Anull%2C%22LivingSpaceTo%22%3Anull%2C%22PriceFrom%22%3Anull%2C%22PriceTo%22%3Anull%2C%22ComparisPointsMin%22%3A0%2C%22AdAgeMax%22%3A0%2C%22AdAgeInHoursMax%22%3Anull%2C%22Keyword%22%3A%22%22%2C%22WithImagesOnly%22%3Anull%2C%22WithPointsOnly%22%3Anull%2C%22Radius%22%3A%2220%22%2C%22MinAvailableDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22MinChangeDate%22%3A%221753-01-01T00%3A00%3A00%22%2C%22LocationSearchString%22%3A%22Z%C3%BCrich%22%2C%22Sort%22%3A11%2C%22HasBalcony%22%3Afalse%2C%22HasTerrace%22%3Afalse%2C%22HasFireplace%22%3Afalse%2C%22HasDishwasher%22%3Afalse%2C%22HasWashingMachine%22%3Afalse%2C%22HasLift%22%3Afalse%2C%22HasParking%22%3Afalse%2C%22PetsAllowed%22%3Afalse%2C%22MinergieCertified%22%3Afalse%2C%22WheelchairAccessible%22%3Afalse%2C%22LowerLeftLatitude%22%3Anull%2C%22LowerLeftLongitude%22%3Anull%2C%22UpperRightLatitude%22%3Anull%2C%22UpperRightLongitude%22%3Anull%7D', proxies=proxies, headers=headers, timeout=2)
             if(r.status_code == 200):
                 pcount = pcount + 1
                 print(pcount, " ", proxy, " is working ", r.status_code)
-                with open("/home/compscript/good2.txt", "a") as myfile:
+                with open("good2.txt", "a") as myfile:
                     myfile.write(proxy)
                     myfile.write('\n')
                     myfile.close()
@@ -197,13 +197,16 @@ def saveData(file):
         new_id = str(id).strip()
         print(new_id)
         time.sleep(1)
-        proxies={
-            "http": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/",
-            "https": "http://ahmdevnb-rotate:d6n2kw7b9l03@p.webshare.io:80/"
-        }
         while True:
             try:
-                response = requests.get('https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',proxies=proxies,  timeout=2)
+                response = requests.get(
+                'https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',
+                    proxies={
+                        "http": "http://d5b58097f4724f53b633fbdd6a5f82cc:@proxy.crawlera.com:8011/",
+                        "https": "http://d5b58097f4724f53b633fbdd6a5f82cc:@proxy.crawlera.com:8011/",
+                    },
+                    verify='/Users/admin/Downloads/zyte-smartproxy-ca.crt' 
+                )
                 break
             except requests.exceptions.ProxyError:
                 print("Proxy Error Encountered: Reloading")
@@ -267,7 +270,7 @@ def saveData(file):
             print("Already in Database")
     print("No of rows affected = ", cursor_count)
 
-       
+
 
                 
 
@@ -282,7 +285,7 @@ start = time.time()
 # proxylist = proxies_arr()
 
 
-
+# # print(test())
 # with concurrent.futures.ThreadPoolExecutor() as executor:
 #         executor.map(extract, proxylist)
 # proxies = [*set(good_proxies)]
@@ -296,6 +299,7 @@ saveData("/home/compscript/Lucerne.txt")
 saveData("/home/compscript/Aarau.txt")
 saveData("/home/compscript/Bern.txt")
 saveData("/home/compscript/Zug.txt")
+
 
 cursor.close()
 end = time.time()
