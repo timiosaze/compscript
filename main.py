@@ -34,7 +34,7 @@ ua = UserAgent()
 chrome_ua = ua.google
 
 # MYSQL CONNECTION PARAMS
-cnx = mysql.connector.connect(host='localhost', user='python', password='password',database='comparisdb')
+cnx = mysql.connector.connect(host='localhost', user='root', password='password',database='comparisdb')
 cursor = cnx.cursor(buffered=True)
 start = time.time()
 
@@ -280,8 +280,8 @@ def saveData(file):
 # print(getTimeRange())
 # print(save_proxies)
 start = time.time()
-clear_states()
-getAllBuyProperties()
+# clear_states()
+# getAllBuyProperties()
 # clear_txt()
 
 # proxies_list()
