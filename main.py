@@ -306,8 +306,8 @@ def checkNewProperties():
 # print(getTimeRange())
 # print(save_proxies)
 start = time.time()
-# clear_states()
-# getAllBuyProperties()
+clear_states()
+getAllBuyProperties()
 # clear_txt()
 
 # proxies_list()
