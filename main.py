@@ -72,6 +72,18 @@ def clear_states():
     f = open('/home/compscript/Zurich.txt', 'r+')
     f.truncate(0) # need '0' when using r+
 
+def clear_new_states():
+    f = open('/home/compscript/newProps/Aarau.txt', 'r+')
+    f.truncate(0) # need '0' when using r+
+    f = open('/home/compscript/newProps/Bern.txt', 'r+')
+    f.truncate(0) # need '0' when using r+
+    f = open('/home/compscript/newProps/Lucerne.txt', 'r+')
+    f.truncate(0) # need '0' when using r+
+    f = open('/home/compscript/newProps/Zug.txt', 'r+')
+    f.truncate(0) # need '0' when using r+
+    f = open('/home/compscript/newProps/Zurich.txt', 'r+')
+    f.truncate(0) # need '0' when using r+
+
 def proxies_list():
     headers={'User-Agent': ua.chrome}
     response = requests.get('https://raw.githubusercontent.com/UptimerBot/proxy-list/main/proxies/http.txt', headers=headers)
@@ -194,6 +206,7 @@ def saveData(file):
     cursor_count = 0
     section = "Buy"
     ids = readFile(file)
+    print(ids)
     print("SAVING DATA FOR ", Path(file).stem)
     for id in ids:
         new_id = str(id).strip()
@@ -276,6 +289,7 @@ def saveData(file):
 def statesInLists(state):
     proxies_arr = []
     file = '/home/compscript/' + state + '.txt'
+    # file = state + '.txt'
     with open(file, 'r') as reader:
         for line in reader.readlines():
             proxies_arr.append(line.strip())
@@ -285,12 +299,11 @@ def allPropertyLink(state):
     vals = (state,)
     cursor.execute('SELECT propertylink FROM properties WHERE state = %s', vals)
     cnx.commit()
-    # print(cursor.rowcount)
-    result = cursor.fetchone()
     row = [item[0] for item in cursor.fetchall()]
     return row
                 
 def checkNewProperties():
+    clear_new_states()
     states = ['Aarau', 'Bern', 'Lucerne', 'Zug', 'Zurich']
     for state in states:
         database = allPropertyLink(state)
@@ -301,18 +314,30 @@ def checkNewProperties():
         print("latest data of " + state)
         print("---------------------------")
         print(len(data))
-
+        file = "/home/compscript/newProps/" + state + ".txt"
+        with open(file, 'w') as fp:
+            for properties in data:
+                # write each item on a new line
+                fp.write("%s\n" % properties)
+        print('Done Writing New Properties to file: ', file)
+       
 
 # print(getTimeRange())
 # print(save_proxies)
 start = time.time()
-clear_states()
-getAllBuyProperties()
+# clear_states()
+# getAllBuyProperties()
 # clear_txt()
 
 # proxies_list()
 # proxylist = proxies_arr()
 checkNewProperties()
+saveData("/home/compscript/newProps/Zurich.txt")
+saveData("/home/compscript/newProps/Lucerne.txt")
+saveData("/home/compscript/newProps/Aarau.txt")
+saveData("/home/compscript/newProps/Bern.txt")
+saveData("/home/compscript/newProps/Zug.txt")
+
 # # print(test())
 # with concurrent.futures.ThreadPoolExecutor() as executor:
 #         executor.map(extract, proxylist)
