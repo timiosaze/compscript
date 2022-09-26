@@ -1,3 +1,4 @@
+from re import I
 from urllib import response
 from bs4 import BeautifulSoup
 import time
@@ -272,9 +273,34 @@ def saveData(file):
             print("Already in Database")
     print("No of rows affected = ", cursor_count)
 
+def statesInLists(state):
+    proxies_arr = []
+    file = '/home/compscript/' + state + '.txt'
+    with open(file, 'r') as reader:
+        for line in reader.readlines():
+            proxies_arr.append(line.strip())
+    return proxies_arr
 
-
+def allPropertyLink(state):
+    vals = (state,)
+    cursor.execute('SELECT propertylink FROM properties WHERE state = %s', vals)
+    cnx.commit()
+    # print(cursor.rowcount)
+    result = cursor.fetchone()
+    row = [item[0] for item in cursor.fetchall()]
+    return row
                 
+def checkNewProperties():
+    states = ['Aarau', 'Bern', 'Lucerne', 'Zug', 'Zurich']
+    for state in states:
+        database = allPropertyLink(state)
+        fetched_data = statesInLists(state)
+        print(state + " database is " + str(len(set(database))))
+        print(state + " new fetched data is " + str(len(set(fetched_data))))
+        data = list(set(database).difference(set(fetched_data)))
+        print("latest data of " + state)
+        print("---------------------------")
+        print(len(data))
 
 
 # print(getTimeRange())
@@ -286,8 +312,7 @@ start = time.time()
 
 # proxies_list()
 # proxylist = proxies_arr()
-
-
+checkNewProperties()
 # # print(test())
 # with concurrent.futures.ThreadPoolExecutor() as executor:
 #         executor.map(extract, proxylist)
@@ -297,11 +322,11 @@ start = time.time()
 # hr = time.strftime('%H')
 # clear_states()
 # getAllBuyProperties(proxy)
-saveData("/home/compscript/Zurich.txt")
-saveData("/home/compscript/Lucerne.txt")
-saveData("/home/compscript/Aarau.txt")
-saveData("/home/compscript/Bern.txt")
-saveData("/home/compscript/Zug.txt")
+# saveData("/home/compscript/Zurich.txt")
+# saveData("/home/compscript/Lucerne.txt")
+# saveData("/home/compscript/Aarau.txt")
+# saveData("/home/compscript/Bern.txt")
+# saveData("/home/compscript/Zug.txt")
 
 
 cursor.close()
