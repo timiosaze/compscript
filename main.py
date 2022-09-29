@@ -211,73 +211,72 @@ def saveData(file):
     for id in ids:
         new_id = str(id).strip()
         print(new_id)
-        time.sleep(1)
-        while True:
-            try:
-                response = requests.get(
-                'https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',
-                    proxies={
-                        "http": "http://d5b58097f4724f53b633fbdd6a5f82cc:@proxy.crawlera.com:8011/",
-                        "https": "http://d5b58097f4724f53b633fbdd6a5f82cc:@proxy.crawlera.com:8011/",
-                    },
-                    verify='/home/compscript/zyte-smartproxy-ca.crt' 
-                )
-                if(int(response.status_code) == 503):
-                    continue
-                break
-            except requests.exceptions.ProxyError:
-                print("Proxy Error Encountered: Reloading")
-        soup = BeautifulSoup(response.text, "lxml")
-        div = soup.find('script',attrs = {'id':'__NEXT_DATA__'})
-        print(response.status_code)
-        j = json.loads(div.text)
-        if "ad" in j["props"]["pageProps"]:
-            pass
-        else:
-            continue
-        phonenumber = ''
-        if isinstance(j["props"]["pageProps"]["contactInformation"], dict):
-            if isinstance(j["props"]["pageProps"]["contactInformation"]["VendorInformation"], dict):
-                if "Phone" in j["props"]["pageProps"]["contactInformation"]["VendorInformation"]:
-                    phonenumber = j["props"]["pageProps"]["contactInformation"]["VendorInformation"]["Phone"]
-                else:
-                    phonenumber = ""
-            elif isinstance(j["props"]["pageProps"]["contactInformation"]["VisitationContactInformation"], dict):
-                if "Phone" in j["props"]["pageProps"]["contactInformation"]["VisitationContactInformation"]:
-                    phonenumber = j["props"]["pageProps"]["contactInformation"]["VisitationContactInformation"]["Phone"]
-                else:
-                    phonenumber = ""
-        else:
-            phonenumber = ""
-        data = j["props"]["pageProps"]["ad"]
-        state = Path(file).stem
-        street = data["Address"]
-        a = street.split()
-        city = ','.join(str(x) for x in a[-2:])  
-        maindata = data["MainData"]
-        keys = list()
-        vals = list()
-        for x in maindata:
-            keys.append(x["Key"])
-            vals.append(x["Value"])
-        pairs =  dict(zip(keys, vals))
-        propertyType = pairs.get("PropertyType", "")
-        numRooms = pairs.get("NumRooms","")
-        floor = pairs.get("Floor","")
-        livingSpace = pairs.get("LivingSpace","")
-        constructionDate = pairs.get("YearOfConstruction","")
-        availableDate = pairs.get("AvailableDate","")
-        description = data["Title"]
-        price = data["Price"]
-        propertylink = new_id
         vals = (new_id,)
         cursor.execute('SELECT propertylink FROM properties WHERE propertylink = %s', vals)
         cnx.commit()
         newcount = cursor.rowcount
         if(newcount == 0):
+            time.sleep(1)
+            while True:
+                try:
+                    response = requests.get(
+                    'https://www.comparis.ch/immobilien/marktplatz/details/show/' + new_id + '',
+                        proxies={
+                            "http": "http://d5b58097f4724f53b633fbdd6a5f82cc:@proxy.crawlera.com:8011/",
+                            "https": "http://d5b58097f4724f53b633fbdd6a5f82cc:@proxy.crawlera.com:8011/",
+                        },
+                        verify='/home/compscript/zyte-smartproxy-ca.crt' 
+                    )
+                    if(int(response.status_code) == 503):
+                        continue
+                    break
+                except requests.exceptions.ProxyError:
+                    print("Proxy Error Encountered: Reloading")
+            soup = BeautifulSoup(response.text, "lxml")
+            div = soup.find('script',attrs = {'id':'__NEXT_DATA__'})
+            print(response.status_code)
+            j = json.loads(div.text)
+            if "ad" in j["props"]["pageProps"]:
+                pass
+            else:
+                continue
+            phonenumber = ''
+            if isinstance(j["props"]["pageProps"]["contactInformation"], dict):
+                if isinstance(j["props"]["pageProps"]["contactInformation"]["VendorInformation"], dict):
+                    if "Phone" in j["props"]["pageProps"]["contactInformation"]["VendorInformation"]:
+                        phonenumber = j["props"]["pageProps"]["contactInformation"]["VendorInformation"]["Phone"]
+                    else:
+                        phonenumber = ""
+                elif isinstance(j["props"]["pageProps"]["contactInformation"]["VisitationContactInformation"], dict):
+                    if "Phone" in j["props"]["pageProps"]["contactInformation"]["VisitationContactInformation"]:
+                        phonenumber = j["props"]["pageProps"]["contactInformation"]["VisitationContactInformation"]["Phone"]
+                    else:
+                        phonenumber = ""
+            else:
+                phonenumber = ""
+            data = j["props"]["pageProps"]["ad"]
+            state = Path(file).stem
+            street = data["Address"]
+            a = street.split()
+            city = ','.join(str(x) for x in a[-2:])  
+            maindata = data["MainData"]
+            keys = list()
+            vals = list()
+            for x in maindata:
+                keys.append(x["Key"])
+                vals.append(x["Value"])
+            pairs =  dict(zip(keys, vals))
+            propertyType = pairs.get("PropertyType", "")
+            numRooms = pairs.get("NumRooms","")
+            floor = pairs.get("Floor","")
+            livingSpace = pairs.get("LivingSpace","")
+            constructionDate = pairs.get("YearOfConstruction","")
+            availableDate = pairs.get("AvailableDate","")
+            description = data["Title"]
+            price = data["Price"]
+            propertylink = new_id
             sql = 'INSERT INTO properties(section, state, street,city, propertyType, numRooms, floor, livingSpace,constructionDate, availableDate,price, description, phonenumber, propertylink) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
             sql_vals =  (section, state, street,city, propertyType, numRooms, floor, livingSpace,constructionDate, availableDate,price, description, phonenumber, propertylink)
-
             cursor.execute(sql, sql_vals)
             cnx.commit()
             cursor_count = cursor_count + cursor.rowcount
