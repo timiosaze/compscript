@@ -183,7 +183,7 @@ def getAllBuyProperties():
 def getTimeRange(lines):
     arr = []
     count = math.ceil(lines / 24)
-    timestamp = time.strftime('%H');
+    timestamp = time.strftime('%H')
     hour = int(timestamp)
     arr = [count * hour,count * (hour + 1)]
     return arr
@@ -325,13 +325,13 @@ def checkNewProperties():
 # print(getTimeRange())
 # print(save_proxies)
 start = time.time()
-# clear_states()
-# getAllBuyProperties()
-# clear_txt()
 
-# proxies_list()
-# proxylist = proxies_arr()
-checkNewProperties()
+hour = time.strftime('%H')
+if(int(hour) == 18):
+    clear_states()
+    getAllBuyProperties()
+    checkNewProperties()
+ 
 saveData("/home/compscript/newProps/Zurich.txt")
 saveData("/home/compscript/newProps/Lucerne.txt")
 saveData("/home/compscript/newProps/Aarau.txt")
